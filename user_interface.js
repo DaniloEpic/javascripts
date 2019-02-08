@@ -32,8 +32,8 @@ function Contexto() {
 this.ws = {};
 this.app = {};
 this.ui = {};
+this.ws.providers = new SequentialLinkedList();
 
- this.ws.providers = new SequentialLinkedList();
  this.ws.resourceProvidedBy = function (c) {
  var d = c.split(">");
  var e = new Resource(d[1],d[3]);
@@ -149,7 +149,7 @@ this.contexto = contexto;
  this.mostrar = function () {
  this.container.display("block");
  };
- this.excluir = function (o) { 
+ this.excluir = function () { 
  this.contexto.app.exception = null;
  this.container.display("none");
  };
@@ -302,26 +302,36 @@ var camada = {
  ocultar : function () {
  this.elemento.display("none");
  this.frame.display("none");
+ },
+ when: function (q) {
+ this.ocultar();
+  if (q) {
+  this.exibir();
+  }
  }
 };
 
 function Selecao(n) {
+this.name = n;
 this.container = new Container(byId(n));
 var s = this.container.get("selecionado");
 s.display("none");
 this.itemSelecionado = s;
 this.itemSelecionavel = this.container.get("selecionavel");
 this.botaoLimpar = this.itemSelecionado.get("limpar").elemento;
- this.selecionar = function (a) {
+ 
+this.selecionar = function (a) {
  this.itemSelecionado.setContent("valor",a);
  this.itemSelecionavel.display("none");
  this.itemSelecionado.display("inline");
  };
+ 
  this.limpar = function () {
  this.itemSelecionado.display("none");
  this.itemSelecionavel.display("inline");
  this.itemSelecionado.setContent("valor","");
  };
+ 
 };
 
 function Validator() {
@@ -346,4 +356,18 @@ function Validator() {
   }
  };
   
+};
+
+function Contador(m) {
+this.mostrador = m;
+ this.iniciarEm = function (m) {
+ this.iniciar_em = parseInt(m);
+ };
+ this.mostrar = function (q) {
+ this.mostrador.text(q);
+ };
+ this.decrementar = function (n) {
+ var q = this.iniciar_em - n;
+ this.mostrar(q);
+ };
 };
